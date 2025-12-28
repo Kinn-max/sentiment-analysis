@@ -1,0 +1,38 @@
+📋 BƯỚC 1: Cài đặt môi trường
+1.1. Kiểm tra Python version (3.10.x)
+1.2. Tạo virtual environment
+cd backend
+python -m venv venv
+venv\Scripts\activate
+1.3. Cài đặt dependencies
+# Tạo file requirements.txt với nội dung sau:
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.4.2
+Flask==3.0.0
+Flask-Cors==4.0.0
+joblib==1.3.2
+requests==2.31.0
+beautifulsoup4==4.12.2
+underthesea==6.7.0
+
+# Cài đặt
+pip install -r requirements.txt
+
+BƯỚC 2: Tạo Dataset Training
+# Chạy script tạo data
+cd backend
+python create_training_data.py
+
+🤖 BƯỚC 3: Train Model
+python -m src.train_model
+
+BƯỚC 4: Chạy Backend API
+python api.py
+
+
+⚛️ BƯỚC 5: Chạy Frontend React
+
+cd frontend
+npm install
+npm start

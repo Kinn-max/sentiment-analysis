@@ -1,0 +1,91 @@
+﻿review,label
+"Không giống hình, rất thất vọng",negative
+"Giá tốt, chất lượng ok",positive
+Chất lượng quá tệ,negative
+Không có gì đặc sắc,neutral
+"Sản phẩm rất tốt, đóng gói cẩn thận, ship nhanh",positive
+"Shop nhiệt tình, hàng đẹp",positive
+"Chất lượng kém, giá lại cao",negative
+Bình thường thôi,neutral
+"Giá tốt, chất lượng ổn, đáng mua",positive
+"Không đáng tiền, rất tệ",negative
+Không đặc biệt,neutral
+"Hàng fake, không như mô tả",negative
+"Giao sai size, không đổi được",negative
+Không tệ nhưng cũng không tốt,neutral
+"Chất lượng ok, giá hợp lý",positive
+"Shop phục vụ tốt, hàng đẹp, giống hình",positive
+"Shop uy tín, hàng đẹp",positive
+"Sản phẩm ổn, đáng tiền",positive
+"Không như quảng cáo, lừa khách",negative
+"Ổn, đúng giá tiền",neutral
+"Bình thường, chấp nhận được",neutral
+"Tạm ổn, đúng mô tả",neutral
+Không tốt lắm,neutral
+"Hàng kém chất lượng, không giống hình",negative
+"Đóng gói kém, hàng bị móp méo",negative
+"Ship nhanh, hàng đẹp như hình",positive
+"Tạm được, giá hơi cao",neutral
+"Ổn, chưa test kỹ",neutral
+"Giao hàng chậm, shop không liên lạc được",negative
+Tạm ổn thôi,neutral
+"Hài lòng lắm, sẽ quay lại",positive
+"Bình thường, không nổi bật",neutral
+"Tuyệt vời, vượt cả mong đợi",positive
+Sản phẩm kém chất lượng,negative
+"Hàng bị lỗi, shop không nhận trách nhiệm",negative
+"Hàng chất lượng, ship nhanh",positive
+"Giao sai hàng, shop không giải quyết",negative
+"Chất lượng tệ, không đáng tiền",negative
+"Đóng gói cẩn thận, hàng ngon",positive
+Bình thường,neutral
+"Giao nhanh, đóng gói cẩn thận",positive
+Sản phẩm như mong đợi,positive
+"Tạm được, giá hợp lý",neutral
+"Chất lượng tốt lắm, giá hợp lý",positive
+Hàng không đúng mô tả,negative
+"Sản phẩm tốt, giao đúng hẹn",positive
+"Rất hài lòng, sẽ mua lại",positive
+"Rất hài lòng với chất lượng, đáng tiền",positive
+Giá rẻ mà chất lượng tốt,positive
+Hàng lỗi nhưng không được đổi trả,negative
+"Sản phẩm chất lượng, shop nhiệt tình",positive
+"Bình thường, đúng giá",neutral
+"Chất lượng tốt, giá rẻ so với thị trường",positive
+Không tốt lắm nhưng cũng không tệ,neutral
+"Thất vọng, sẽ không mua lại",negative
+Ổn áp,neutral
+"Ổn, không quá ấn tượng",neutral
+"Shop lừa đảo, cẩn thận",negative
+"Shop lừa đảo, hàng fake",negative
+"Giao chậm, shop thờ ơ",negative
+Chất lượng tệ hại,negative
+"Bình thường, không có gì đặc biệt",neutral
+"Tạm ổn, sẽ dùng thử",neutral
+"Rất ưng, sẽ giới thiệu bạn bè",positive
+"Tạm được, chờ dùng xem",neutral
+"Giao hàng lâu, đóng gói kém",negative
+Thất vọng về chất lượng,negative
+"Đóng gói kém, hàng bị vỡ",negative
+Tạm được,neutral
+"Hàng kém, giá lại cao",negative
+"Sản phẩm lỗi, yêu cầu đổi trả nhưng shop không phản hồi",negative
+"Ổn, chưa dùng nhiều",neutral
+"Shop không uy tín, hàng fake",negative
+"Tạm ổn, chấp nhận được",neutral
+"Ổn, đúng như mong đợi",neutral
+"Giao sai màu, shop thái độ không tốt",negative
+"Chất lượng xuất sắc, rất hài lòng",positive
+"Chất lượng xuất sắc, giá cả hợp lý, sẽ ủng hộ shop tiếp",positive
+"Sản phẩm tệ, không mua nữa",negative
+"Đóng gói chắc chắn, hài lòng",positive
+"Giao hàng nhanh, sản phẩm đúng như mô tả",positive
+"Sản phẩm đẹp, giao đúng hẹn",positive
+"Bình thường thôi, ổn",neutral
+"Ổn, không xuất sắc",neutral
+Tạm chấp nhận,neutral
+Chất lượng tuyệt vời,positive
+"Tạm được, chưa dùng thử",neutral
+"Ổn áp, giá hợp lý",neutral
+"Đóng gói kỹ càng, hàng đẹp",positive
+"Chất lượng kém, sẽ trả lại",negative
