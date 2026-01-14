@@ -17,8 +17,9 @@ import {
   clearLines,
   rotatePiece,
   getRandomPieceType
-} from '../utils/gameLogic';
-import { tetrisAPI } from '../utils/api';
+} from '../utils/gameLogic'
+import { tetrisAPI } from '../utils/api'
+import { saveScore } from '../utils/scoreManager'
 
 const TetrisGame = () => {
   const [mode, setMode] = useState('menu');
@@ -53,32 +54,32 @@ const TetrisGame = () => {
   };
 
   const spawnPiece = useCallback(() => {
-    const type = nextPiece || getRandomPieceType();
-    const piece = createPiece(type);
-    const newNextPiece = getRandomPieceType();
+    const type = nextPiece || getRandomPieceType()
+    const piece = createPiece(type)
+    const newNextPiece = getRandomPieceType()
 
     if (!isValidPosition(board, piece, piece.x, piece.y)) {
-      setGameOver(true);
-      return;
+      setGameOver(true)
+      return
     }
 
-    setCurrentPiece(piece);
-    setNextPiece(newNextPiece);
-    setAiSuggestion(null);
-  }, [board, nextPiece]);
+    setCurrentPiece(piece)
+    setNextPiece(newNextPiece)
+    setAiSuggestion(null)
+  }, [board, nextPiece])
 
   const lockPieceDirectly = useCallback((pieceToLock) => {
-    const newBoard = lockPiece(board, pieceToLock);
-    const result = clearLines(newBoard);
+    const newBoard = lockPiece(board, pieceToLock)
+    const result = clearLines(newBoard)
 
-    setBoard(result.board);
-    setLines(prev => prev + result.linesCleared);
+    setBoard(result.board)
+    setLines(prev => prev + result.linesCleared)
 
-    const points = [0, 100, 300, 500, 800];
-    setScore(prev => prev + points[result.linesCleared] * level);
+    const points = [0, 100, 300, 500, 800]
+    setScore(prev => prev + points[result.linesCleared] * level)
 
-    setTimeout(() => spawnPiece(), 0);
-  }, [board, level, spawnPiece]);
+    setTimeout(() => spawnPiece(), 0)
+  }, [board, level, spawnPiece])
 
   useEffect(() => {
     if (!difficulty) return;
@@ -87,15 +88,47 @@ const TetrisGame = () => {
   }, [level, difficulty]);
 
   useEffect(() => {
-    const newLevel = Math.floor(lines / 10) + 1;
-    setLevel(newLevel);
-  }, [lines]);
+    const newLevel = Math.floor(lines / 10) + 1
+    setLevel(newLevel)
+  }, [lines])
 
   useEffect(() => {
     if (score > highScore) {
-      setHighScore(score);
+      setHighScore(score)
     }
-  }, [score, highScore]);
+  }, [score, highScore])
+
+  // Save high score on game over
+  useEffect(() => {
+    if (gameOver && score > 0) {
+      const scoreMode = mode === 'assisted' ? 'ai_assist' : mode === 'auto' ? 'ai_auto' : 'manual'
+      saveScore(score, scoreMode)
+    }
+  }, [gameOver, score, mode])
+
+  const startGame = (gameMode) => {
+    const newBoard = createBoard()
+    const newNextPiece = getRandomPieceType()
+    const type = newNextPiece
+    const piece = createPiece(type)
+    const nextNext = getRandomPieceType()
+
+    if (!isValidPosition(newBoard, piece, piece.x, piece.y)) {
+      setGameOver(true)
+      return
+    }
+
+    setMode(gameMode)
+    setBoard(newBoard)
+    setScore(0)
+    setLines(0)
+    setLevel(1)
+    setGameOver(false)
+    setIsPaused(false)
+    setAiSuggestion(null)
+    setCurrentPiece(piece)
+    setNextPiece(nextNext)
+  }
 
   const prepareGame = (gameMode) => {
     setMode(gameMode);
@@ -116,26 +149,20 @@ const TetrisGame = () => {
     }
   };
 
-  const startGame = (selectedDifficulty) => {
-    setDifficulty(selectedDifficulty);
-    setGameStarted(true);
-    spawnPiece();
-  };
-
   const lockCurrentPiece = useCallback(() => {
-    if (!currentPiece) return;
+    if (!currentPiece) return
 
-    const newBoard = lockPiece(board, currentPiece);
-    const result = clearLines(newBoard);
+    const newBoard = lockPiece(board, currentPiece)
+    const result = clearLines(newBoard)
 
-    setBoard(result.board);
-    setLines(prev => prev + result.linesCleared);
+    setBoard(result.board)
+    setLines(prev => prev + result.linesCleared)
 
-    const points = [0, 100, 300, 500, 800];
-    setScore(prev => prev + points[result.linesCleared] * level);
+    const points = [0, 100, 300, 500, 800]
+    setScore(prev => prev + points[result.linesCleared] * level)
 
-    setTimeout(() => spawnPiece(), 0);
-  }, [board, currentPiece, spawnPiece, level]);
+    setTimeout(() => spawnPiece(), 0)
+  }, [board, currentPiece, spawnPiece, level])
 
   const movePiece = useCallback((dx, dy) => {
     if (!currentPiece || gameOver || isPaused || !gameStarted) return false;
@@ -144,12 +171,12 @@ const TetrisGame = () => {
     const newY = currentPiece.y + dy;
 
     if (isValidPosition(board, currentPiece, newX, newY)) {
-      setCurrentPiece(prev => ({ ...prev, x: newX, y: newY }));
-      return true;
+      setCurrentPiece(prev => ({ ...prev, x: newX, y: newY }))
+      return true
     }
 
     if (dy > 0) {
-      lockCurrentPiece();
+      lockCurrentPiece()
     }
 
     return false;
@@ -160,13 +187,13 @@ const TetrisGame = () => {
 
     const rotated = rotatePiece(currentPiece);
     if (isValidPosition(board, rotated, rotated.x, rotated.y)) {
-      setCurrentPiece(rotated);
+      setCurrentPiece(rotated)
     } else {
-      const kicks = [[1, 0], [-1, 0], [0, -1]];
+      const kicks = [[1, 0], [-1, 0], [0, -1]]
       for (const [dx, dy] of kicks) {
         if (isValidPosition(board, rotated, rotated.x + dx, rotated.y + dy)) {
-          setCurrentPiece({ ...rotated, x: rotated.x + dx, y: rotated.y + dy });
-          return;
+          setCurrentPiece({ ...rotated, x: rotated.x + dx, y: rotated.y + dy })
+          return
         }
       }
     }
@@ -177,7 +204,7 @@ const TetrisGame = () => {
 
     let newY = currentPiece.y;
     while (isValidPosition(board, currentPiece, currentPiece.x, newY + 1)) {
-      newY++;
+      newY++
     }
 
     setCurrentPiece(prev => ({ ...prev, y: newY }));
@@ -194,53 +221,53 @@ const TetrisGame = () => {
       tetrisAPI.getSuggestion(gameState)
         .then(data => {
           if (data && data.best_move) {
-            setAiSuggestion(data);
+            setAiSuggestion(data)
           }
-          setSuggestionLoading(false);
+          setSuggestionLoading(false)
         })
         .catch((error) => {
-          console.error('Suggestion error:', error);
-          setSuggestionLoading(false);
-        });
+          console.error('Suggestion error:', error)
+          setSuggestionLoading(false)
+        })
     }
   }, [mode, currentPiece?.type, currentPiece?.rotation, board, gameOver, isPaused, showSuggestion, nextPiece, score, lines, level, gameStarted]);
 
   // AI Auto Play Effect
   useEffect(() => {
-    if (mode !== 'auto' || !currentPiece || gameOver || isPaused || !gameStarted) return;
+    if (mode !== 'auto' || !currentPiece || gameOver || isPaused || !gameStarted) return
 
     const timer = setTimeout(async () => {
-      const gameState = { board, currentPiece, nextPiece, score, lines, level };
-      const aiMove = await tetrisAPI.getAIMove(gameState);
-      if (!aiMove) return;
+      const gameState = { board, currentPiece, nextPiece, score, lines, level }
+      const aiMove = await tetrisAPI.getAIMove(gameState)
+      if (!aiMove) return
 
-      const shapes = TETROMINOS[currentPiece.type].shapes;
+      const shapes = TETROMINOS[currentPiece.type].shapes
       let piece = {
         ...currentPiece,
         rotation: aiMove.rotation,
         shape: shapes[aiMove.rotation],
         x: aiMove.column
-      };
-
-      if (!isValidPosition(board, piece, piece.x, piece.y)) {
-        lockPieceDirectly(currentPiece);
-        return;
       }
 
-      let y = piece.y;
-      while (isValidPosition(board, piece, piece.x, y + 1)) y++;
-      piece.y = y;
+      if (!isValidPosition(board, piece, piece.x, piece.y)) {
+        lockPieceDirectly(currentPiece)
+        return
+      }
 
-      setCurrentPiece(piece);
+      let y = piece.y
+      while (isValidPosition(board, piece, piece.x, y + 1)) y++
+      piece.y = y
+
+      setCurrentPiece(piece)
 
       setTimeout(() => {
-        lockPieceDirectly(piece);
-      }, 0);
+        lockPieceDirectly(piece)
+      }, 0)
 
-    }, 120);
+    }, 120)
 
-    return () => clearTimeout(timer);
-  }, [mode, currentPiece, board, gameOver, isPaused, nextPiece, score, lines, level, lockPieceDirectly, gameStarted]);
+    return () => clearTimeout(timer)
+  }, [mode, currentPiece, board, gameOver, isPaused, nextPiece, score, lines, level, lockPieceDirectly, gameStarted])
 
   // Keyboard Controls Effect
   useEffect(() => {
@@ -251,37 +278,37 @@ const TetrisGame = () => {
 
       switch (e.key) {
         case 'ArrowLeft':
-          e.preventDefault();
-          movePiece(-1, 0);
-          break;
+          e.preventDefault()
+          movePiece(-1, 0)
+          break
         case 'ArrowRight':
-          e.preventDefault();
-          movePiece(1, 0);
-          break;
+          e.preventDefault()
+          movePiece(1, 0)
+          break
         case 'ArrowDown':
-          e.preventDefault();
-          movePiece(0, 1);
-          break;
+          e.preventDefault()
+          movePiece(0, 1)
+          break
         case 'ArrowUp':
-          e.preventDefault();
-          rotate();
-          break;
+          e.preventDefault()
+          rotate()
+          break
         case ' ':
-          e.preventDefault();
-          hardDrop();
-          break;
+          e.preventDefault()
+          hardDrop()
+          break
         case 'p':
         case 'P':
-          e.preventDefault();
-          setIsPaused(prev => !prev);
-          break;
+          e.preventDefault()
+          setIsPaused(prev => !prev)
+          break
         case 'h':
         case 'H':
           if (mode === 'assisted') {
-            e.preventDefault();
-            setShowSuggestion(prev => !prev);
+            e.preventDefault()
+            setShowSuggestion(prev => !prev)
           }
-          break;
+          break
       }
     };
 
@@ -293,10 +320,10 @@ const TetrisGame = () => {
   useEffect(() => {
     if ((mode === 'manual' || mode === 'assisted') && !gameOver && !isPaused && gameStarted) {
       gameLoopRef.current = setInterval(() => {
-        const now = Date.now();
+        const now = Date.now()
         if (now - lastMoveTimeRef.current > dropSpeedRef.current) {
-          movePiece(0, 1);
-          lastMoveTimeRef.current = now;
+          movePiece(0, 1)
+          lastMoveTimeRef.current = now
         }
       }, 50);
 
@@ -363,7 +390,7 @@ const TetrisGame = () => {
         trainingProgress={trainingProgress}
         onTrainAI={handleTrainAI}
       />
-    );
+    )
   }
 
   return (
@@ -379,7 +406,7 @@ const TetrisGame = () => {
           isPaused={isPaused}
           gameStarted={gameStarted}
           onSelectDifficulty={startGame}
-          onBackToMenu={() => setMode('menu')}
+          onBackToMenu={() => { setMode('menu'); setGameOver(false); setIsPaused(false) }}
         />
 
         <div className="space-y-4">
@@ -398,14 +425,14 @@ const TetrisGame = () => {
           <ControlButtons
             isPaused={isPaused}
             onTogglePause={() => setIsPaused(prev => !prev)}
-            onBackToMenu={() => setMode('menu')}
+            onBackToMenu={() => { setMode('menu'); setGameOver(false); setIsPaused(false) }}
           />
 
           <KeyboardControls mode={mode} />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TetrisGame;
+export default TetrisGame
